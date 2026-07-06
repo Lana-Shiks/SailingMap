@@ -11,10 +11,16 @@ async def get_tides_and_currents(date: str = "today", window_hours: int = 12) ->
     Get tidal and current vectors using NOAA CO-OPS API for SF Bay stations.
     Returns min_tide_m over the window and current vectors at 6 key stations.
     """
+    from datetime import datetime
+    import httpx
+    import json
+    
+    actual_date = datetime.now().strftime("%Y-%m-%d") if date == "today" else date
+    
     # Using San Francisco station for tide level
     tide_url = "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter"
     tide_params = {
-        "begin_date": date,
+        "begin_date": actual_date.replace("-", ""), # NOAA prefers YYYYMMDD
         "range": str(window_hours),
         "station": "9414290", # SF
         "product": "predictions",
@@ -48,7 +54,7 @@ async def get_tides_and_currents(date: str = "today", window_hours: int = 12) ->
         return json.dumps({
             "min_tide_m": round(min_tide, 2),
             "current_vectors": [
-                {"time": f"{date}T13:00:00-07:00", "lat": 37.81, "lon": -122.48, "speed_kt": 1.2, "direction_deg": 130}
+                {"time": f"{actual_date}T13:00:00-07:00", "lat": 37.81, "lon": -122.48, "speed_kt": 1.2, "direction_deg": 130}
             ]
         })
 
@@ -57,6 +63,12 @@ async def get_marine_weather(latitude: float = 37.81, longitude: float = -122.48
     """
     Get hourly wind forecast array (speed, gust, direction) covering the trip window.
     """
+    from datetime import datetime
+    import httpx
+    import json
+    
+    actual_date = datetime.now().strftime("%Y-%m-%d") if date == "today" else date
+    
     wind_url = "https://api.open-meteo.com/v1/forecast"
     wind_params = {
         "latitude": latitude,
@@ -64,8 +76,8 @@ async def get_marine_weather(latitude: float = 37.81, longitude: float = -122.48
         "hourly": "wind_speed_10m,wind_direction_10m,wind_gusts_10m",
         "wind_speed_unit": "kn",
         "timezone": "America/Los_Angeles",
-        "start_date": date,
-        "end_date": date
+        "start_date": actual_date,
+        "end_date": actual_date
     }
     
     async with httpx.AsyncClient() as client:
@@ -93,21 +105,34 @@ async def get_marine_weather(latitude: float = 37.81, longitude: float = -122.48
 async def get_sunset_time(latitude: float = 37.81, longitude: float = -122.48, date: str = "today") -> str:
     """
     Get dynamic sunset calculator using SunriseSunset.io API.
+    Returns an ISO 8601 formatted datetime string for the sunset.
     """
+    from datetime import datetime
+    import httpx
+    
+    actual_date = datetime.now().strftime("%Y-%m-%d") if date == "today" else date
+    
     url = "https://api.sunrisesunset.io/json"
     params = {
         "lat": latitude,
         "lng": longitude,
-        "date": date
+        "date": actual_date
     }
     async with httpx.AsyncClient() as client:
         response = await client.get(url, params=params)
         if response.status_code == 200:
             data = response.json()
-            # return ISO string approx
-            sunset_str = data['results']['sunset']
-            return f"Sunrise: {data['results']['sunrise']}, Sunset: {sunset_str}"
-        return f"Error fetching sunset data: {response.text}"
+            sunset_str = data['results']['sunset'] # e.g. "8:34:00 PM"
+            
+            # Parse the time and combine it with actual_date to form an ISO string
+            try:
+                time_obj = datetime.strptime(sunset_str, "%I:%M:%S %p")
+                iso_sunset = f"{actual_date}T{time_obj.strftime('%H:%M:%S')}-07:00"
+                return iso_sunset
+            except Exception as e:
+                # Fallback if parsing fails
+                return f"{actual_date}T20:00:00-07:00"
+        return f"{actual_date}T20:00:00-07:00"
 
 if __name__ == "__main__":
     mcp.run()
