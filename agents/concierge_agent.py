@@ -30,16 +30,16 @@ def plan_route(
     ROUTE_IPC_PATH = os.path.join(os.path.dirname(__file__), '..', 'latest_route.json')
     
     for wf in wind_forecast:
-        if "gust_kt" not in wf:
+        if "gust_kt" not in wf or wf["gust_kt"] is None:
             wf["gust_kt"] = wf.get("speed_kt", 0.0) * 1.5
-        if "direction_deg" not in wf:
+        if "direction_deg" not in wf or wf["direction_deg"] is None:
             wf["direction_deg"] = 0.0
             
     for cv in current_vectors:
-        if "lat" not in cv: cv["lat"] = 37.8
-        if "lon" not in cv: cv["lon"] = -122.4
-        if "speed_kt" not in cv: cv["speed_kt"] = 0.0
-        if "direction_deg" not in cv: cv["direction_deg"] = 0.0
+        if "lat" not in cv or cv["lat"] is None: cv["lat"] = 37.8
+        if "lon" not in cv or cv["lon"] is None: cv["lon"] = -122.4
+        if "speed_kt" not in cv or cv["speed_kt"] is None: cv["speed_kt"] = 0.0
+        if "direction_deg" not in cv or cv["direction_deg"] is None: cv["direction_deg"] = 0.0
 
     req = {
         "start": start,
@@ -59,14 +59,28 @@ def plan_route(
         "sunset_time": sunset_time
     }
     
+    router_url = os.environ.get("ROUTER_URL", "http://127.0.0.1:8000/plan_route")
     print("SENDING TO ROUTER:", json.dumps(req, indent=2))
-    res = requests.post("http://127.0.0.1:8000/plan_route", json=req)
-    if not res.ok:
-        print(f"ROUTER ERROR ({res.status_code}): {res.text}")
-        with open("last_422.txt", "w") as f:
-            f.write(f"ROUTER ERROR ({res.status_code}): {res.text}\n")
-            f.write(f"REQUEST: {json.dumps(req, indent=2)}\n")
-    res.raise_for_status()
+    
+    import requests
+    from requests.adapters import HTTPAdapter
+    from urllib3.util.retry import Retry
+
+    session = requests.Session()
+    retries = Retry(total=5, backoff_factor=1, status_forcelist=[502, 503, 504], allowed_methods=["POST"])
+    session.mount('http://', HTTPAdapter(max_retries=retries))
+
+    try:
+        res = session.post(router_url, json=req, timeout=15)
+        if not res.ok:
+            print(f"ROUTER ERROR ({res.status_code}): {res.text}")
+            with open("last_422.txt", "w") as f:
+                f.write(f"ROUTER ERROR ({res.status_code}): {res.text}\n")
+                f.write(f"REQUEST: {json.dumps(req, indent=2)}\n")
+        res.raise_for_status()
+    except Exception as e:
+        print(f"REQUESTS POST EXCEPTION: {e}")
+        raise
     
     route_data = res.json()
     with open(ROUTE_IPC_PATH, "w") as f:
