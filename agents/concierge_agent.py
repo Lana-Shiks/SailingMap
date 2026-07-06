@@ -99,7 +99,7 @@ Workflow:
 1. Parse the user request to identify the start point, end point, and intermediate stops (pinned_waypoints). Use the exact 'ID' from the Available Gazetteer Waypoints above for any locations mentioned. If the user asks for a round trip (e.g., 'to Golden Gate and back'), set 'start' and 'end' to the same location, and add the destination to 'pinned_waypoints'.
 2. If the user asks for a place not in the gazetteer, fail loudly and ask them to choose a known safe-water point. Do NOT invent coordinates or IDs.
 3. Call the weather MCP tools (`get_marine_weather`, `get_tides_and_currents`, `get_sunset_time`) to get environmental constraints for the trip. Use boat configuration defaults (e.g. draft_m 1.5, max_wind 25.0) if unstated.
-4. Call `plan_route` EXACTLY ONCE. Provide ALL required arguments. `wind_forecast` and `current_vectors` are lists of dictionaries.
+4. Call `plan_route` EXACTLY ONCE. Provide ALL required arguments. `wind_forecast` and `current_vectors` are lists of dictionaries. YOU MUST FORMAT `departure_time` and `sunset_time` strictly as ISO 8601 datetime strings (e.g. '2026-07-06T14:00:00-07:00').
 5. Compose a briefing from the `legs[]`, flags, and `sunset_margin_min` returned by the router. Narrate the findings.
    - If the route is 'infeasible', explain the machine-readable reason (e.g. 'sunset_violation', 'wind_exceeds_ceiling') and propose concrete alternatives.
 6. Return a response envelope matching this structure:

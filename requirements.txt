@@ -5,3 +5,5 @@ requests
 pydantic
 google-antigravity
 numpy
+mcp
+httpx
