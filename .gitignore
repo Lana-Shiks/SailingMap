@@ -1,0 +1,43 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# IDEs
+.idea/
+.vscode/
+
+# Node
+node_modules/
+dist/
+build/
+.next/
+
+# Next.js
+/.next/
+/out/
+
+# Data and large files
+data/
+*.gz
+*.pdf
+*.htm
+*.tif
+*.sid
+latest_route.json
+last_422.txt
+scratch_*.py
+test_route.py
+test_routes.py
