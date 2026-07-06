@@ -1,0 +1,87 @@
+[
+  {
+    "id": "berkeley_marina",
+    "display_name": "Berkeley Marina",
+    "aliases": ["berkeley"],
+    "lat": 37.865,
+    "lon": -122.318
+  },
+  {
+    "id": "richmond",
+    "display_name": "Richmond (Marina Bay)",
+    "aliases": ["richmond marina", "marina bay"],
+    "lat": 37.910,
+    "lon": -122.360
+  },
+  {
+    "id": "sausalito",
+    "display_name": "Sausalito",
+    "aliases": [],
+    "lat": 37.858,
+    "lon": -122.478
+  },
+  {
+    "id": "south_beach_harbor",
+    "display_name": "South Beach Harbor",
+    "aliases": ["south beach", "sf"],
+    "lat": 37.781,
+    "lon": -122.385
+  },
+  {
+    "id": "alameda_estuary",
+    "display_name": "Alameda/Oakland Estuary",
+    "aliases": ["alameda", "oakland estuary"],
+    "lat": 37.795,
+    "lon": -122.285
+  },
+  {
+    "id": "angel_island",
+    "display_name": "Angel Island (Ayala Cove)",
+    "aliases": ["ayala cove"],
+    "lat": 37.869,
+    "lon": -122.435
+  },
+  {
+    "id": "raccoon_strait",
+    "display_name": "Raccoon Strait",
+    "aliases": [],
+    "lat": 37.867,
+    "lon": -122.455
+  },
+  {
+    "id": "alcatraz_view",
+    "display_name": "Alcatraz View",
+    "aliases": ["alcatraz"],
+    "lat": 37.828,
+    "lon": -122.420
+  },
+  {
+    "id": "golden_gate_bridge",
+    "display_name": "Golden Gate Bridge Midspan",
+    "aliases": ["golden gate", "ggb"],
+    "lat": 37.819,
+    "lon": -122.478
+  },
+  {
+    "id": "treasure_island",
+    "display_name": "Treasure Island",
+    "aliases": [],
+    "lat": 37.818,
+    "lon": -122.380
+  },
+  {
+    "id": "mccovey_cove",
+    "display_name": "McCovey Cove",
+    "aliases": ["oracle park"],
+    "lat": 37.776,
+    "lon": -122.388
+  },
+  {
+    "id": "point_bonita",
+    "display_name": "Point Bonita Approach",
+    "aliases": ["outside gate"],
+    "lat": 37.815,
+    "lon": -122.535,
+    "flag": "outside-gate"
+  }
+]

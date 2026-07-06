@@ -30,7 +30,6 @@ build/
 /out/
 
 # Data and large files
-data/
 *.gz
 *.pdf
 *.htm

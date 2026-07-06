@@ -1,0 +1,28 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Main VTS Lanes"
+      },
+      "geometry": {
+        "type": "MultiLineString",
+        "coordinates": [
+          [
+            [-122.490, 37.815],
+            [-122.450, 37.820],
+            [-122.410, 37.830],
+            [-122.380, 37.850],
+            [-122.370, 37.900]
+          ],
+          [
+            [-122.410, 37.830],
+            [-122.340, 37.810],
+            [-122.330, 37.780]
+          ]
+        ]
+      }
+    }
+  ]
+}

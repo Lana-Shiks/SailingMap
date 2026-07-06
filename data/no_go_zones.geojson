@@ -1,0 +1,24 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Alcatraz Restricted Zone",
+        "description": "200m standoff"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [-122.428, 37.829],
+            [-122.420, 37.830],
+            [-122.418, 37.824],
+            [-122.426, 37.824],
+            [-122.428, 37.829]
+          ]
+        ]
+      }
+    }
+  ]
+}
