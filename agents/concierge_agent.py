@@ -102,7 +102,7 @@ with open(gaz_path, 'r') as f:
 # --- Agent Configuration ---
 
 config = LocalAgentConfig(
-    model="gemini-3.1-flash-lite",
+    model="gemini-3-flash",
     system_instructions=f"""You are the Concierge Agent for the SailingMap system.
 Your role is to plan sailing routes on San Francisco Bay from natural-language trip requests.
 
